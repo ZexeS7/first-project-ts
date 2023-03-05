@@ -7,6 +7,7 @@ const LoginPage: React.FC = () => {
   const {
     login: loginState,
     pass: passState,
+    auth,
     error,
     errorMessage,
   } = useAppSelector((state) => state.login);
@@ -25,7 +26,9 @@ const LoginPage: React.FC = () => {
   }
   function logined(): void {
     dispatch(login());
-    navigate("/profile");
+    if (auth) {
+      navigate("/profile");
+    }
   }
   return (
     <Container>
@@ -64,10 +67,7 @@ const LoginPage: React.FC = () => {
           onChange={changePass}
           variant="outlined"
         />
-        <Button type="submit" onClick={logined}>
-          Login
-        </Button>
-        {localStorage.getItem("login")}
+        <Button onClick={logined}>Login</Button>
       </Box>
     </Container>
   );

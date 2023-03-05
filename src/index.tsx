@@ -6,6 +6,7 @@ import "./index.css";
 import { Provider } from "react-redux";
 import store from "./store";
 import { BrowserRouter } from "react-router-dom";
+import "./i18n";
 
 const container = document.getElementById("root")!;
 const root = createRoot(container);

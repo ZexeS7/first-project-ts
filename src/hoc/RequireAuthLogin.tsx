@@ -2,12 +2,12 @@ import { Navigate } from "react-router-dom";
 
 type RequireAuthProps = { children: any };
 
-const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
+const RequireAuthLogin: React.FC<RequireAuthProps> = ({ children }) => {
   const auth = localStorage.getItem("auth");
-  if (!auth) {
-    return <Navigate to={"/"} />;
+  if (auth) {
+    return <Navigate to={"/profile"} />;
   }
   return children;
 };
 
-export default RequireAuth;
+export default RequireAuthLogin;

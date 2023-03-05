@@ -11,7 +11,7 @@ const ProfilePage: React.FC = () => {
   return (
     <Container>
       <h1>Profile Page</h1>
-      Name: {localStorage.getItem("login")}
+      Name: Admin
       <Box component={"form"}>
         <Button type="submit" variant="outlined" onClick={setout}>
           Logout

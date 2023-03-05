@@ -11,7 +11,7 @@ type LoginState = {
 const initialState: LoginState = {
   login: "",
   pass: "",
-  auth: "",
+  auth: null,
   error: false,
   errorMessage: "",
 };

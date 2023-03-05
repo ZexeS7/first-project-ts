@@ -1,4 +1,4 @@
-import { AccountBox, AttachMoney, Login } from "@mui/icons-material";
+import { AccountBox, AttachMoney, Login, Language } from "@mui/icons-material";
 import {
   AppBar,
   Box,
@@ -8,8 +8,10 @@ import {
   IconButton,
   Toolbar,
   Typography,
+  Menu,
+  MenuItem,
 } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import "./App.css";
 import HomePage from "./components/HomePage";
@@ -19,10 +21,22 @@ import ProfilePage from "./components/ProfilePage";
 import RequireAuth from "./hoc/RequireAuth";
 import { useAppDispatch, useAppSelector } from "./hook";
 import { isAuth } from "./store/loginSlice";
+import { useTranslation } from "react-i18next";
+import i18next from "i18next";
+import RequireAuthLogin from "./hoc/RequireAuthLogin";
 
 function App() {
   const auth = useAppSelector((state) => state.login.auth);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   useEffect(() => {
     dispatch(isAuth());
   }, [dispatch]);
@@ -40,12 +54,42 @@ function App() {
               variant="contained"
               aria-label="contained error button group">
               <Link to="/">
-                <Button component="span">Home</Button>
+                <Button component="span">{t("home")}</Button>
               </Link>
               <Link to="/news">
-                <Button component="span">News</Button>
+                <Button component="span">{t("news")}</Button>
               </Link>
             </ButtonGroup>
+            <IconButton
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}>
+              <Language sx={{ color: "#FFFFFF" }} />
+            </IconButton>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}>
+              <MenuItem
+                onClick={() => {
+                  i18next.changeLanguage("uk");
+                  handleClose();
+                }}>
+                Українська
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  i18next.changeLanguage("en");
+                  handleClose();
+                }}>
+                English
+              </MenuItem>
+            </Menu>
             {auth ? (
               <Link to="/profile">
                 <IconButton>
@@ -73,7 +117,14 @@ function App() {
             </RequireAuth>
           }
         />
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/login"
+          element={
+            <RequireAuthLogin>
+              <LoginPage />
+            </RequireAuthLogin>
+          }
+        />
       </Routes>
     </div>
   );

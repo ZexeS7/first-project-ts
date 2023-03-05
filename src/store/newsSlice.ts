@@ -38,9 +38,7 @@ export const getOtherNews = createAsyncThunk<
 export const removeNews = createAsyncThunk<number, number>(
   "newsSlice/remuveNews",
   async function (id) {
-    const response = await axios.delete(
-      `https://jsonplaceholder.typicode.com/posts/${id}`
-    );
+    await axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`);
     return id;
   }
 );
